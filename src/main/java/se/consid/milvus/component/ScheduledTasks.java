@@ -12,12 +12,15 @@ public class ScheduledTasks {
     @Autowired
     private JobStreamServer jobStreamServer;
 
-    // Runs every 15 seconds
-    @Scheduled(fixedRate = 15000)
+    // Runs every 120 seconds
+    @Scheduled(fixedRate = 120000)
     public void taskWithFixedRate() {
         log.info("Fixed Rate Task :: Execution Time - {}", System.currentTimeMillis() / 1000);
-        jobStreamServer.fetchNextInJobInStream().ifPresentOrElse(res -> log.info("Fetched job: {}", res),
-                () -> log.info("No job fetched"));
+        jobStreamServer.fetchNextInJobInStream().subscribe(jobListings -> {
+            jobListings.stream().forEach(jobListing -> {
+                log.info("Job Listing: {} - {} {}", jobListing.getId(), jobListing.getApplication_deadline(), jobListing.getHeadline());
+            });
+        });
     }
 
     // Runs 60 seconds after the previous task has finished
