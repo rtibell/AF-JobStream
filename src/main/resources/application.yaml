@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: MilvusTest
+  ai:
+    vectorstore:
+      milvus:
+        client:
+          host: "localhost"
+          port: 19530
+          username: "root"
+          password: "milvus"
+        databaseName: "af_job"
+        collectionName: "job_stream"
+        embeddingDimension: 1536
+        indexType: IVF_FLAT
+        metricType: COSINE
+
+server:
+  port: 8001
+
+
+# Logging levels
+logging:
+  level:
+    root: INFO
+    org:
+      springframework: INFO
+    se:
+      consid:
+        se:
+          milvus: DEBUG
